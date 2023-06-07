@@ -1,0 +1,41 @@
+---
+apiVersion: operator.knative.dev/v1beta1
+kind: KnativeEventing
+metadata:
+  name: knative-eventing
+  namespace: knative-eventing
+---
+apiVersion: operator.serverless.openshift.io/v1alpha1
+kind: KnativeKafka
+metadata:
+  name: knative-kafka
+  namespace: knative-eventing
+spec:
+  channel:
+    enabled: true
+    bootstrapServers: my-cluster-kafka-bootstrap.kafka:9092
+  source:
+    enabled: true
+  broker:
+    enabled: true
+    defaultConfig:
+      bootstrapServers: my-cluster-kafka-bootstrap.kafka:9092
+      numPartitions: 1
+      replicationFactor: 1
+  sink:
+    enabled: true
+---
+apiVersion: eventing.knative.dev/v1
+kind: Broker
+metadata:
+  annotations:
+    eventing.knative.dev/broker.class: Kafka
+  name: default
+  namespace: default
+spec:
+  config:
+    apiVersion: v1
+    kind: ConfigMap
+    name: kafka-broker-config
+    namespace: knative-eventing
+---

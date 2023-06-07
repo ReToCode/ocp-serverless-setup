@@ -9,7 +9,7 @@ oc wait --for=condition=ready pod -l name=knative-openshift -n openshift-serverl
 oc wait --for=condition=ready pod -l name=knative-openshift-ingress -n openshift-serverless --timeout=300s
 oc wait --for=condition=ready pod -l name=knative-operator -n openshift-serverless --timeout=300s
 
-echo "💻 Creating an Knative instance"
+echo "💻 Creating an Knative Serving instance"
 oc apply -f serverless/knativeserving-kourier.yaml
 sleep 60
 oc wait --for=condition=ready pod -l app=controller -n knative-serving --timeout=300s
