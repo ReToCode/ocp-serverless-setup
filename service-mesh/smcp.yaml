@@ -1,0 +1,35 @@
+apiVersion: maistra.io/v2
+kind: ServiceMeshControlPlane
+metadata:
+  name: basic
+  namespace: istio-system
+spec:
+  profiles:
+    - default
+  security:
+    dataPlane:
+      mtls: false
+  techPreview:
+    meshConfig:
+      defaultConfig:
+        terminationDrainDuration: 35s
+  gateways:
+    ingress:
+      service:
+        metadata:
+          labels:
+            knative: ingressgateway
+  proxy:
+    networking:
+      trafficControl:
+        inbound:
+          excludedPorts:
+            - 8444 # metrics
+            - 8022 # serving: wait-for-drain k8s pre-stop hook
+  addons:
+    grafana:
+      enabled: false
+    kiali:
+      enabled: false
+    prometheus:
+      enabled: false

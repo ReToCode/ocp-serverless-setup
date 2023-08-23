@@ -1,0 +1,11 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: autoscaler-allow
+  namespace: knative-serving
+spec:
+  podSelector:
+    matchLabels:
+      app: autoscaler
+  ingress:
+    - {}
