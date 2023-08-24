@@ -11,7 +11,6 @@ sleep 10
 oc wait --for=condition=ready pod -l app=istiod -n istio-system --timeout=300s
 oc wait --for=condition=ready pod -l app=istio-ingressgateway -n istio-system --timeout=300s
 
-oc apply -f service-mesh/knative-gateways.yaml
 
 echo "💻 Installing Serverless Operator"
 oc apply -f serverless/operator.yaml
@@ -19,6 +18,9 @@ sleep 60
 oc wait --for=condition=ready pod -l name=knative-openshift -n openshift-serverless --timeout=300s
 oc wait --for=condition=ready pod -l name=knative-openshift-ingress -n openshift-serverless --timeout=300s
 oc wait --for=condition=ready pod -l name=knative-operator -n openshift-serverless --timeout=300s
+
+echo "💻 Creating gateway resources"
+oc apply -f service-mesh/knative-gateways.yaml
 
 echo "💻 Creating an Knative Serving instance"
 oc apply -f serverless/knativeserving-istio.yaml
